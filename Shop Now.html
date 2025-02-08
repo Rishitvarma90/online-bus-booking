@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Items</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(ss.gif); /* Replace with your actual image URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 20px;
+        }
+
+        .item-card {
+            background-color: rgba(255, 255, 255, 0.089); /* Slightly transparent white for better readability */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-card h3 {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .item-card p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .shop-now-button {
+            background-color: #ff4c60;
+            border: 2px solid #ff4c60;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .shop-now-button:hover {
+            background-color: #ff1e39;
+            border-color: #ff1e39;
+            transform: translateY(-3px);
+        }
+
+        .shop-now-button:active {
+            transform: translateY(2px);
+        }
+
+        .form-container {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .form-container input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 14px;
+            width: 200px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: rgba(255, 255, 255, 0.134);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .form-header {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Snack Item -->
+    <div class="item-card">
+        <img src="download.jpeg" alt="Snacks">
+        <h3>Snacks</h3>
+        <p>Grab some tasty snacks for your journey.</p>
+        <button class="shop-now-button" onclick="showForm('Snacks')">Shop Now</button>
+    </div>
+
+    <!-- Bag Item -->
+    <div class="item-card">
+        <img src="t1.jpg" alt="Bag">
+        <h3>Travel Bag</h3>
+        <p>Convenient and stylish bags for your trip.</p>
+        <button class="shop-now-button" onclick="showForm('Travel Bag')">Shop Now</button>
+    </div>
+
+    <!-- Trolley Item -->
+    <div class="item-card">
+        <img src="t2.jpg" alt="Trolley">
+        <h3>Trolley</h3>
+        <p>Durable and easy-to-carry luggage for smooth travels.</p>
+        <button class="shop-now-button" onclick="showForm('Trolley')">Shop Now</button>
+    </div>
+
+    <!-- Sleeping Mask Item -->
+    <div class="item-card">
+        <img src="images.jpeg" alt="Sleeping Mask">
+        <h3>Sleeping Mask</h3>
+        <p>Get a restful sleep during your journey.</p>
+        <button class="shop-now-button" onclick="showForm('Sleeping Mask')">Shop Now</button>
+    </div>
+
+    <!-- Water Bottle Item -->
+    <div class="item-card">
+        <img src="download (1).jpeg" alt="Water Bottle">
+        <h3>Water Bottle</h3>
+        <p>Stay hydrated with our premium water bottles.</p>
+        <button class="shop-now-button" onclick="showForm('Water Bottle')">Shop Now</button>
+    </div>
+
+    <!-- Veg Tiffin Meal Item -->
+    <div class="item-card">
+        <img src="download (2).jpeg" alt="Veg Tiffin">
+        <h3>Veg Tiffin Meal</h3>
+        <p>Healthy and delicious vegetarian meals for your journey.</p>
+        <button class="shop-now-button" onclick="showForm('Veg Tiffin Meal')">Shop Now</button>
+    </div>
+
+    <!-- Non-Veg Tiffin Meal Item -->
+    <div class="item-card">
+        <img src="d4.jpg" alt="Non-Veg Tiffin">
+        <h3>Non-Veg Tiffin Meal</h3>
+        <p>Satisfy your hunger with tasty non-vegetarian meals.</p>
+        <button class="shop-now-button" onclick="showForm('Non-Veg Tiffin Meal')">Shop Now</button>
+    </div>
+
+    <!-- Form for entering details -->
+    <div class="form-container" id="form-container">
+        <h3 class="form-header" id="item-name">Enter Your Details for: </h3>
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="text" id="phone" placeholder="Phone Number (10 digits)" required>
+        <input type="text" id="pnr" placeholder="PNR Number (12 digits)" required>
+        <button onclick="submitForm()">Submit</button>
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <script>
+        function showForm(item) {
+            document.getElementById('form-container').style.display = 'flex';
+            document.getElementById('item-name').textContent = 'Enter Your Details for: ' + item;
+        }
+
+        function submitForm() {
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var pnr = document.getElementById('pnr').value;
+            var errorMessage = '';
+
+            // Validate phone number (should be exactly 10 digits)
+            if (!/^\d{10}$/.test(phone)) {
+                errorMessage += 'Phone number must contain 10 digits.\n';
+            }
+
+            // Validate PNR number (should be exactly 12 digits)
+            if (!/^\d{12}$/.test(pnr)) {
+                errorMessage += 'PNR number must contain 12 digits.\n';
+            }
+
+            // If there are errors, display them
+            if (errorMessage) {
+                document.getElementById('error-message').textContent = errorMessage;
+            } else {
+                // Redirect to a thank-you page
+                window.location.href = "thank_you.html";  // Replace with your actual thank-you page
+            }
+        }
+    </script>
+
+</body>
+</html>

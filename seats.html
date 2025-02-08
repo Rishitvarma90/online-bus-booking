@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url(bus-illustrator.gif); /* Ensure to replace this with your actual image file */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .bus {
+            position: relative;
+            width: 400px; /* Total bus width */
+            margin: 0 auto;
+            background-color: rgba(234, 234, 234, 0.8); /* Slightly opaque for better readability */
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .driver-area {
+            background-color: #aaa;
+            height: 50px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .deck {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns for each deck */
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .seat, .sleeper-seat {
+            width: 60px;
+            height: 60px;
+            background-color: lightgray;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            position: relative;
+        }
+        .sleeper-seat {
+            width: 120px; /* Larger width for upper deck seats */
+            height: 80px;
+        }
+        .sleeper-seat .icon, .seat .icon {
+            font-size: 30px; /* Icon size */
+            position: absolute;
+            top: 5px;
+            left: 10px;
+        }
+        .sleeper-seat.selected, .seat.selected {
+            color: white;
+            background-color: green; /* Highlight selected seats in green */
+        }
+        .sleeper-seat.booked-male,
+        .sleeper-seat.booked-female,
+        .seat.booked-male,
+        .seat.booked-female {
+            cursor: not-allowed;
+        }
+        .sleeper-seat.booked-male, .seat.booked-male {
+            background-color: rgba(42, 37, 37, 0.852);
+            color: white;
+        }
+        .sleeper-seat.booked-female, .seat.booked-female {
+            background-color: pink;
+            color: white;
+        }
+        .price {
+            font-size: 12px;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #333;
+        }
+        h2, h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Seat Selection</h2>
+    <div id="busDetails"></div>
+    
+    <h3>Select Your Seats</h3>
+
+    <div class="bus">
+        <div class="driver-area">Driver's Area</div>
+        
+        <h4>Lower Deck</h4>
+        <div class="deck" id="lowerDeckGrid"></div>
+
+        <h4>Upper Deck (Sleeper Seats)</h4>
+        <div class="deck" id="upperDeckGrid"></div>
+    </div>
+
+    <button onclick="bookNow()">Book Now</button>
+
+    <script>
+        const BASE_PRICE = 500; // Base price for seats
+        const FRONT_SEAT_PREMIUM = 100; // Additional price for front seats
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                busName: params.get("busName"),
+                busType: params.get("busType"),
+                time: params.get("time"),
+                price: params.get("price"),
+                seats: parseInt(params.get("seats"), 36),
+            };
+        }
+
+        function loadBusDetails() {
+            const { busName, busType, time, price, seats } = getQueryParams();
+
+            document.getElementById("busDetails").innerHTML = `
+                <strong>Bus Name:</strong> ${busName}<br>
+                <strong>Bus Type:</strong> ${busType}<br>
+                <strong>Time:</strong> ${time}<br>
+                <strong>Price:</strong> ${price}<br>
+                <strong>Seats Available:</strong> ${seats}
+            `;
+            
+            showSeatSelection(seats);
+        }
+
+        function showSeatSelection(totalSeats) {
+            const lowerDeckSeats = Math.floor(totalSeats / 2);  // Lower deck seats
+            const upperDeckSeats = totalSeats - lowerDeckSeats;  // Remaining seats in upper deck
+
+            loadSeats('lowerDeckGrid', 'seat', lowerDeckSeats, 'L'); // Load lower deck seats with L prefix
+            loadSeats('upperDeckGrid', 'sleeper-seat', upperDeckSeats, 'U'); // Load upper deck seats with U prefix
+        }
+
+        function loadSeats(deckId, seatType, totalSeats, prefix) {
+            const seatGrid = document.getElementById(deckId);
+            seatGrid.innerHTML = '';
+
+            for (let i = 1; i <= totalSeats; i++) {
+                const seat = document.createElement('div');
+                seat.classList.add(seatType);
+                const seatNumber = `${prefix}${i}`; // Create seat number based on prefix (L1, U1, etc.)
+                seat.innerHTML = `<span class="icon">${seatType === 'sleeper-seat' ? '🛌' : '💺'}</span>${seatNumber}`; // Sleeper seat icon for upper deck, chair icon for lower deck
+
+                // Calculate seat price
+                const seatPrice = calculateSeatPrice(i);
+                const priceElement = document.createElement('div');
+                priceElement.classList.add('price');
+                priceElement.textContent = `₹${seatPrice}`;
+                seat.appendChild(priceElement);
+
+                seat.onclick = () => toggleSeatSelection(seat, seatNumber, seatPrice);
+                seatGrid.appendChild(seat);
+            }
+
+            // Pre-book 30% of the seats
+            const bookedSeats = generateRandomBookedSeats(totalSeats, Math.floor(totalSeats * 0.3));
+            const seatElements = seatGrid.children;
+            for (let i = 0; i < totalSeats; i++) {
+                const seat = seatElements[i];
+                if (bookedSeats.includes(i + 1)) {
+                    const gender = (Math.random() > 0.5) ? 'male' : 'female';  // Random gender for booking
+                    if (gender === 'male') {
+                        seat.classList.add('booked-male');
+                    } else {
+                        seat.classList.add('booked-female');
+                    }
+                    seat.onclick = null;  // Disable click on booked seats
+                }
+            }
+        }
+
+        function calculateSeatPrice(seatNumber) {
+            // Front seats are seats 1-6 (adjust as needed)
+            if (seatNumber <= 6) {
+                return BASE_PRICE + FRONT_SEAT_PREMIUM;
+            }
+            return BASE_PRICE;
+        }
+
+        let selectedSeats = [];
+        let totalPrice = 0;
+
+        function toggleSeatSelection(seat, seatNumber, seatPrice) {
+            if (
+                seat.classList.contains('booked-male') || 
+                seat.classList.contains('booked-female')
+            ) {
+                alert('This seat is already booked.');
+                return;
+            }
+
+            if (seat.classList.contains('selected')) {
+                seat.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(s => s.seatNumber !== seatNumber);
+                totalPrice -= seatPrice;
+            } else {
+                seat.classList.add('selected');
+                selectedSeats.push({ seatNumber, seatPrice });
+                totalPrice += seatPrice;
+            }
+        }
+
+        function bookNow() {
+            const { busName, busType, time, price } = getQueryParams();
+
+            if (selectedSeats.length === 0) {
+                alert('Please select at least one seat.');
+                return;
+            }
+
+            // Show selected seats and total price
+            const selectedSeatNumbers = selectedSeats.map(s => s.seatNumber).join(', ');
+            alert(`Seats selected: ${selectedSeatNumbers}\nTotal Price: ₹${totalPrice}`);
+
+            // Redirect to a payment page (example)
+            window.location.href = `payment.html?busName=${encodeURIComponent(busName)}&time=${encodeURIComponent(time)}&price=${encodeURIComponent(totalPrice)}&seats=${encodeURIComponent(selectedSeatNumbers)}`;
+        }
+
+        // Function to generate random booked seats
+        function generateRandomBookedSeats(totalSeats, bookedCount) {
+            let booked = [];
+            while (booked.length < bookedCount) {
+                const randomSeat = Math.floor(Math.random() * totalSeats) + 1;
+                if (!booked.includes(randomSeat)) {
+                    booked.push(randomSeat);
+                }
+            }
+            return booked;
+        }
+
+        window.onload = loadBusDetails;
+    </script>
+
+</body>
+</html>

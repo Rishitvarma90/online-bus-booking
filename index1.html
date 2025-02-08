@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: white;
+            text-align: center;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Background image positioned to the right middle */
+        .background-image {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 500px;
+            height: auto;
+            opacity: 0.8;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: #f1c40f;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        select, input {
+            background: white;
+            color: black;
+        }
+        button {
+            background: #f1c40f;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+    
+        
+        shop-now-button {
+            background-color: #ff4c60;
+            border: 2px solid #ff4c60;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        shop-now-button:hover {
+            background-color: #ff1e39;
+            border-color: #ff1e39;
+            transform: translateY(-3px);
+        }
+        shop-now-button:active {
+            transform: translateY(2px)
+        }
+        btn {
+	border: none;
+	font-family: 'Lato';
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	cursor: pointer;
+	padding: 25px 80px;
+	display: inline-block;
+	margin: 15px 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+/* Pseudo elements for icons */
+.btn:before {
+	font-family: 'FontAwesome';
+
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+}
+
+
+/* Icon separator */
+.btn-sep {
+	padding: 25px 60px 25px 120px;
+}
+
+.btn-sep:before {
+	background: rgba(0,0,0,0.15);
+}
+btn-2 {
+	background: #2ecc71;
+	color: #fff;
+}
+
+.btn-2:hover {
+	background: #27ae60;
+}
+
+.btn-2:active {
+	background: #27ae60;
+	top: 2px;
+}
+
+.btn-2:before {
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;
+	line-height: 3;
+	font-size: 140%;
+	width: 60px;
+}
+
+        
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+       
+        <a <button onclick="window.location.href='Contact Us.html';">📞 contact us</button></a> 
+        <a <button onclick="window.location.href='Rate Us.html';">Rate Us</button></a>
+        <h1>    𝓥 𝓑𝓤𝓢𝓔𝓢 𝓦𝓔𝓛𝓒𝓞𝓜𝓔𝓢  𝓨𝓞𝓤</h1>
+        <a<button onclick="window.location.href='Bus Booking Chatbot.html';">𝓬𝓱𝓪𝓽 𝔀𝓲𝓽𝓱 𝓾𝓼</button></a>
+
+    </div>
+
+    <a <button onclick="window.location.href='about.html';">ℹ 𝕒𝕓𝕠𝕦𝕥 𝕦𝕤</button></a></div>
+ 
+       
+
+     
+    </div>
+
+    <h2>your booking begins</h2>
+
+    <!-- Bus Booking Form -->
+    <div class="container">
+        <h2>Book Your Bus Ticket</h2>
+        <form id="bookingForm" onsubmit="return showAvailableBuses(event)">
+            <label for="from">From (Departure Location):</label>
+            <select id="from" name="from" required>
+                <option value="" disabled selected>Select Destination Location</option>
+                <option value="Adilabad">Adilabad</option>
+                <option value="Ahobilam - Narasimha Swamy Temple">Ahobilam - Narasimha Swamy Temple</option>
+                <option value="Alampur - Jogulamba Temple">Alampur - Jogulamba Temple</option>
+                <option value="Amalapuram">Amalapuram</option>
+                <option value="Amaravati - Amaralingeswara Swamy Temple">Amaravati - Amaralingeswara Swamy Temple</option>
+                <option value="Anantapur">Anantapur</option>
+                <option value="Annavaram">Annavaram</option>
+                <option value="Annavaram - Satyanarayana Swamy Temple">Annavaram - Satyanarayana Swamy Temple</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Basar - Gnana Saraswati Temple">Basar - Gnana Saraswati Temple</option>
+                <option value="Bhadrachalam - Rama Temple">Bhadrachalam - Rama Temple</option>
+                <option value="Bhadrakali Temple (Warangal)">Bhadrakali Temple (Warangal)</option>
+                <option value="Bhimadole">Bhimadole</option>
+                <option value="Bhimavaram">Bhimavaram</option>
+                <option value="Bhongir">Bhongir</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Chikkalluripeta">Chikkalluripeta</option>
+                <option value="Chinnayagudem">Chinnayagudem</option>
+                <option value="Chittoor">Chittoor</option>
+                <option value="Devarapalli">Devarapalli</option>
+                <option value="Dichpally Ramalayam (Nizamabad)">Dichpally Ramalayam (Nizamabad)</option>
+                <option value="Dwaraka Tirumala">Dwaraka Tirumala</option>
+                <option value="Dwaraka Tirumala - Venkateswara Swamy Temple">Dwaraka Tirumala - Venkateswara Swamy Temple</option>
+                <option value="Eluru">Eluru</option>
+                <option value="Eluru By-Pass">Eluru By-Pass</option>
+                <option value="Gadwal">Gadwal</option>
+                <option value="Gudivada">Gudivada</option>
+                <option value="Guduru">Guduru</option>
+                <option value="Guntur">Guntur</option>
+                <option value="Hanuman Junction">Hanuman Junction</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Jagitial">Jagitial</option>
+                <option value="Jangareddygudem">Jangareddygudem</option>
+                <option value="Jeelakaragudem">Jeelakaragudem</option>
+                <option value="Kadapa">Kadapa</option>
+                <option value="Kakinada">Kakinada</option>
+                <option value="Kaleshwaram - Mukteswara Swamy Temple">Kaleshwaram - Mukteswara Swamy Temple</option>
+                <option value="Kamareddy">Kamareddy</option>
+                <option value="Kamavarapukota">Kamavarapukota</option>
+                <option value="Kanipakam - Varasiddhi Vinayaka Temple">Kanipakam - Varasiddhi Vinayaka Temple</option>
+                <option value="Karimnagar">Karimnagar</option>
+                <option value="Khammam">Khammam</option>
+                <option value="Kikaram">Kikaram</option>
+                <option value="Kondagaattu - Anjaneya Swamy Temple">Kondagaattu - Anjaneya Swamy Temple</option>
+                <option value="Koyallagudem">Koyallagudem</option>
+                <option value="Kurnool">Kurnool</option>
+                <option value="Machilipatnam">Machilipatnam</option>
+                <option value="Mahbubnagar">Mahbubnagar</option>
+                <option value="Mancherial">Mancherial</option>
+                <option value="Mantralayam - Raghavendra Swamy Mutt">Mantralayam - Raghavendra Swamy Mutt</option>
+                <option value="Marteru">Marteru</option>
+                <option value="Medak">Medak</option>
+                <option value="Miryalaguda">Miryalaguda</option>
+                <option value="Nalgonda">Nalgonda</option>
+                <option value="Nallajeralla">Nallajeralla</option>
+                <option value="Narasapuram">Narasapuram</option>
+                <option value="Nellore">Nellore</option>
+                <option value="Nizamabad">Nizamabad</option>
+                <option value="Ongole">Ongole</option>
+                <option value="Palakollu">Palakollu</option>
+                <option value="Penugonda">Penugonda</option>
+                <option value="Pittapuram">Pittapuram</option>
+                <option value="Proddatur">Proddatur</option>
+                <option value="Pune">Pune</option>
+                <option value="Rajahmundry">Rajahmundry</option>
+                <option value="Ramagundam">Ramagundam</option>
+                <option value="Ravulapalem">Ravulapalem</option>
+                <option value="Sangareddy">Sangareddy</option>
+                <option value="Sidaatham">Sidaatham</option>
+                <option value="Simhachalam - Varaha Lakshmi Narasimha Temple">Simhachalam - Varaha Lakshmi Narasimha Temple</option>
+                <option value="Siddipet">Siddipet</option>
+                <option value="Srikalahasti">Srikalahasti</option>
+                <option value="Srikakulam">Srikakulam</option>
+                <option value="Srisailam">Srisailam</option>
+                <option value="Srisailam - Mallikarjuna Swamy Temple">Srisailam - Mallikarjuna Swamy Temple</option>
+                <option value="Sri Ujjaini Mahakali Temple (Secunderabad)">Sri Ujjaini Mahakali Temple (Secunderabad)</option>
+                <option value="Tadepalligudem">Tadepalligudem</option>
+                <option value="Tadepalligudem Bridge">Tadepalligudem Bridge</option>
+                <option value="Tanuku">Tanuku</option>
+                <option value="Tenali">Tenali</option>
+                <option value="Thousand Pillar Temple (Warangal)">Thousand Pillar Temple (Warangal)</option>
+                <option value="Tirumala">Tirumala</option>
+                <option value="Tirumala (Tirupati) - Venkateswara Temple">Tirumala (Tirupati) - Venkateswara Temple</option>
+                <option value="Tirupati">Tirupati</option>
+                <option value="Tuni">Tuni</option>
+                <option value="Vemulawada - Raja Rajeshwara Swamy Temple">Vemulawada - Raja Rajeshwara Swamy Temple</option>
+                <option value="Vijayawada">Vijayawada</option>
+                <option value="Vizag">Vizag</option>
+                <option value="Vizianagaram">Vizianagaram</option>
+                <option value="Wanaparthy">Wanaparthy</option>
+                <option value="Warangal">Warangal</option>
+                <option value="Yadadri - Lakshmi Narasimha Temple">Yadadri - Lakshmi Narasimha Temple</option>
+                <option value="Yanam">Yanam</option>
+                
+            </select>
+
+            <label for="to">To (Destination Location):</label>
+            <select id="to" name="to" required>
+                <option value="" disabled selected>Select Destination Location</option>
+                <option value="Adilabad">Adilabad</option>
+                <option value="Ahobilam - Narasimha Swamy Temple">Ahobilam - Narasimha Swamy Temple</option>
+                <option value="Alampur - Jogulamba Temple">Alampur - Jogulamba Temple</option>
+                <option value="Amalapuram">Amalapuram</option>
+                <option value="Amaravati - Amaralingeswara Swamy Temple">Amaravati - Amaralingeswara Swamy Temple</option>
+                <option value="Anantapur">Anantapur</option>
+                <option value="Annavaram">Annavaram</option>
+                <option value="Annavaram - Satyanarayana Swamy Temple">Annavaram - Satyanarayana Swamy Temple</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Basar - Gnana Saraswati Temple">Basar - Gnana Saraswati Temple</option>
+                <option value="Bhadrachalam - Rama Temple">Bhadrachalam - Rama Temple</option>
+                <option value="Bhadrakali Temple (Warangal)">Bhadrakali Temple (Warangal)</option>
+                <option value="Bhimadole">Bhimadole</option>
+                <option value="Bhimavaram">Bhimavaram</option>
+                <option value="Bhongir">Bhongir</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Chikkalluripeta">Chikkalluripeta</option>
+                <option value="Chinnayagudem">Chinnayagudem</option>
+                <option value="Chittoor">Chittoor</option>
+                <option value="Devarapalli">Devarapalli</option>
+                <option value="Dichpally Ramalayam (Nizamabad)">Dichpally Ramalayam (Nizamabad)</option>
+                <option value="Dwaraka Tirumala">Dwaraka Tirumala</option>
+                <option value="Dwaraka Tirumala - Venkateswara Swamy Temple">Dwaraka Tirumala - Venkateswara Swamy Temple</option>
+                <option value="Eluru">Eluru</option>
+                <option value="Eluru By-Pass">Eluru By-Pass</option>
+                <option value="Gadwal">Gadwal</option>
+                <option value="Gudivada">Gudivada</option>
+                <option value="Guduru">Guduru</option>
+                <option value="Guntur">Guntur</option>
+                <option value="Hanuman Junction">Hanuman Junction</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Jagitial">Jagitial</option>
+                <option value="Jangareddygudem">Jangareddygudem</option>
+                <option value="Jeelakaragudem">Jeelakaragudem</option>
+                <option value="Kadapa">Kadapa</option>
+                <option value="Kakinada">Kakinada</option>
+                <option value="Kaleshwaram - Mukteswara Swamy Temple">Kaleshwaram - Mukteswara Swamy Temple</option>
+                <option value="Kamareddy">Kamareddy</option>
+                <option value="Kamavarapukota">Kamavarapukota</option>
+                <option value="Kanipakam - Varasiddhi Vinayaka Temple">Kanipakam - Varasiddhi Vinayaka Temple</option>
+                <option value="Karimnagar">Karimnagar</option>
+                <option value="Khammam">Khammam</option>
+                <option value="Kikaram">Kikaram</option>
+                <option value="Kondagaattu - Anjaneya Swamy Temple">Kondagaattu - Anjaneya Swamy Temple</option>
+                <option value="Koyallagudem">Koyallagudem</option>
+                <option value="Kurnool">Kurnool</option>
+                <option value="Machilipatnam">Machilipatnam</option>
+                <option value="Mahbubnagar">Mahbubnagar</option>
+                <option value="Mancherial">Mancherial</option>
+                <option value="Mantralayam - Raghavendra Swamy Mutt">Mantralayam - Raghavendra Swamy Mutt</option>
+                <option value="Marteru">Marteru</option>
+                <option value="Medak">Medak</option>
+                <option value="Miryalaguda">Miryalaguda</option>
+                <option value="Nalgonda">Nalgonda</option>
+                <option value="Nallajeralla">Nallajeralla</option>
+                <option value="Narasapuram">Narasapuram</option>
+                <option value="Nellore">Nellore</option>
+                <option value="Nizamabad">Nizamabad</option>
+                <option value="Ongole">Ongole</option>
+                <option value="Palakollu">Palakollu</option>
+                <option value="Penugonda">Penugonda</option>
+                <option value="Pittapuram">Pittapuram</option>
+                <option value="Proddatur">Proddatur</option>
+                <option value="Pune">Pune</option>
+                <option value="Rajahmundry">Rajahmundry</option>
+                <option value="Ramagundam">Ramagundam</option>
+                <option value="Ravulapalem">Ravulapalem</option>
+                <option value="Sangareddy">Sangareddy</option>
+                <option value="Sidaatham">Sidaatham</option>
+                <option value="Simhachalam - Varaha Lakshmi Narasimha Temple">Simhachalam - Varaha Lakshmi Narasimha Temple</option>
+                <option value="Siddipet">Siddipet</option>
+                <option value="Srikalahasti">Srikalahasti</option>
+                <option value="Srikakulam">Srikakulam</option>
+                <option value="Srisailam">Srisailam</option>
+                <option value="Srisailam - Mallikarjuna Swamy Temple">Srisailam - Mallikarjuna Swamy Temple</option>
+                <option value="Sri Ujjaini Mahakali Temple (Secunderabad)">Sri Ujjaini Mahakali Temple (Secunderabad)</option>
+                <option value="Tadepalligudem">Tadepalligudem</option>
+                <option value="Tadepalligudem Bridge">Tadepalligudem Bridge</option>
+                <option value="Tanuku">Tanuku</option>
+                <option value="Tenali">Tenali</option>
+                <option value="Thousand Pillar Temple (Warangal)">Thousand Pillar Temple (Warangal)</option>
+                <option value="Tirumala">Tirumala</option>
+                <option value="Tirumala (Tirupati) - Venkateswara Temple">Tirumala (Tirupati) - Venkateswara Temple</option>
+                <option value="Tirupati">Tirupati</option>
+                <option value="Tuni">Tuni</option>
+                <option value="Vemulawada - Raja Rajeshwara Swamy Temple">Vemulawada - Raja Rajeshwara Swamy Temple</option>
+                <option value="Vijayawada">Vijayawada</option>
+                <option value="Vizag">Vizag</option>
+                <option value="Vizianagaram">Vizianagaram</option>
+                <option value="Wanaparthy">Wanaparthy</option>
+                <option value="Warangal">Warangal</option>
+                <option value="Yadadri - Lakshmi Narasimha Temple">Yadadri - Lakshmi Narasimha Temple</option>
+                <option value="Yanam">Yanam</option>
+                
+            </select>
+
+            <label for="date">Travel Date:</label>
+            <input type="date" id="date" name="date" required>
+            <script>
+                // Set minimum date to today
+                document.addEventListener("DOMContentLoaded", function () {
+                    let today = new Date().toISOString().split('T')[0];
+                    document.getElementById("date").setAttribute("min", today);
+                });
+            </script>
+
+            <button type="submit">Check Available Buses</button>
+        </form>
+        <a <button onclick="window.location.href='Help Page.html';">🙋‍♂️ help & support</button></a> </div>
+        
+    
+        
+      
+        <<button onclick="window.location.href='Shop Now.html';" class="btn btn-2 btn-sep icon-cart">😋🍽️𝙬𝙤𝙧𝙡𝙙 1𝙨𝙩 𝙨𝙚𝙧𝙫𝙞𝙘𝙚 𝙞𝙣 𝙗𝙪𝙨 𝙤𝙣 𝙙𝙚𝙡𝙞𝙫𝙚𝙧𝙮 𝙤𝙛 𝙥𝙖𝙨𝙨𝙚𝙣𝙜𝙚𝙧𝙨 𝙣𝙚𝙚𝙙𝙨 𝙩𝙤 𝙚𝙭𝙥𝙡𝙤𝙧𝙚 𝙘𝙡𝙞𝙘𝙠 𝙝𝙚𝙧𝙚 😋ᵞᵁᴹᴹᵞ😋</button>
+  
+        <div id="availableBuses" class="available-buses" style="display: none;">
+
+            <h3>Available Buses:</h3>
+            <button onclick="window.location.href='available-buses.html';"> Available Buses</button>
+        </div>
+        
+
+        <div id="selectedBus" class="selected-bus" style="display: none;">
+            <h3>Selected Bus Details:</h3>
+            <div id="busDetails"></div>
+        </div>
+
+        <div id="seatSelection" class="seat-selection" style="display: none;">
+            <h3>Select Your Seats:</h3>
+            <div class="seat-grid"></div>
+            <button onclick="confirmBooking()">Confirm Booking</button>
+        </div>
+    
+
+   <h4>𝓾𝓼𝓮 𝓬𝓸𝓭𝓮:ＤＩＳＣＯＵＮＴ１０ 𝓪𝓷𝓭 𝓰𝓮𝓽 𝓯𝓵𝓪𝓽 10% 𝓸𝓯𝓯 𝓸𝓷 𝔂𝓸𝓾𝓻 𝓫𝓾𝓼 𝓽𝓲𝓬𝓴𝓮𝓽𝓼</h4>
+
+    <footer>
+        <p>&copy; 2025 V Bus(andhraclicks) Booking System</p>
+    </footer>
+
+    <script>
+        let selectedBus = null;
+        let selectedSeats = [];
+       
+        function showAvailableBuses(event) {
+        event.preventDefault();
+
+        // Get selected values
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+        const date = document.getElementById("date").value;
+
+        // Check if From and To are the same
+        if (from === to) {
+            alert("Departure and destination locations cannot be the same.");
+            return;
+        }
+        
+
+        // Check if all fields are filled
+        if (!from || !to || !date) {
+            alert("Please select all fields.");
+            return;
+        }
+
+        // Redirect to available buses page with parameters
+        window.location.href = `available-buses.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}`;
+    }
+
+
+          
+
+         
+       
+    </script>
+
+</body>
+</html>

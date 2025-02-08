@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Buses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url(bus-truning.gif); /* Replace with your actual image URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            color: #333; /* Set a base color for text */
+        }
+        .bus-list {
+            width: 50%;
+            margin: auto;
+        }
+        .bus {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #46d60d;
+            border-radius: 5px;
+            background-color: rgba(233, 240, 232, 0.9); /* Slightly transparent background for the bus card */
+            cursor: pointer;
+        }
+        .bus:hover {
+            background-color: #18df0a;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .filter-container select, .filter-container input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Available Buses</h2>
+    <p id="route"></p>
+
+    <div class="filter-container">
+        <select id="acFilter">
+            <option value="">Select AC Type</option>
+            <option value="All">All</option>
+            <option value="AC">AC</option>
+            <option value="Non-AC">Non-AC</option>
+        </select>
+        <select id="timeFilter">
+            <option value="">Select Time</option>
+            <option value="All">All</option>
+            <option value="Morning">Morning (6:00 AM - 12:00 PM)</option>
+            <option value="Afternoon">Afternoon (12:00 PM - 6:00 PM)</option>
+            <option value="Evening">Evening (6:00 PM - 12:00 AM)</option>
+        </select>
+        <input type="text" id="operatorFilter" placeholder="Search by Operator">
+        <input type="number" id="minPrice" placeholder="Min Price" />
+        <input type="number" id="maxPrice" placeholder="Max Price" />
+        <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <div class="bus-list" id="busList"></div>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                from: params.get("from"),
+                to: params.get("to"),
+                date: params.get("date"),
+            };
+        }
+
+        function loadAvailableBuses() {
+            const { from, to, date } = getQueryParams();
+
+            if (!from || !to || !date) {
+                document.getElementById("route").innerText = "Invalid search parameters.";
+                return;
+            }
+
+            document.getElementById("route").innerText = `Showing buses from ${from} to ${to} on ${date}`;
+
+            const buses = [
+                { name: "SVR Tours & Travels", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+                { name: "SRS Travels", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+                { name: "VRL Travels", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+                { name: "shymolli", type: "VOLVO AC SLEEPER2*1", time: "10:00 AM", price: "₹500", seats: 15 },
+                { name: "RAJESH Travels", type: "VOLVO AC SLEEPER2*1", time: "2:00 PM", price: "₹650", seats: 10 },
+                { name: "APSRTC (Andhra Pradesh State Road Transport Corporation) - AC Sleeper", type: "AC Sleeper", time: "8:00 AM", price: "₹600", seats: 20 },
+    { name: "TSRTC (Telangana State Road Transport Corporation) - Non-AC Seater", type: "Non-AC Seater", time: "12:00 PM", price: "₹400", seats: 25 },
+    { name: "SVR Tours & Travels - AC Sleeper", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+    { name: "SRS Travels - Non-AC Seater", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+    { name: "VRL Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+    { name: "Shyamoli Paribahan - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "10:00 AM", price: "₹500", seats: 15 },
+    { name: "RAJESH Travels - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "2:00 PM", price: "₹650", seats: 10 },
+    { name: "Kallada Travels - AC Sleeper", type: "AC Sleeper", time: "8:00 PM", price: "₹700", seats: 12 },
+    { name: "Parveen Travels - Non-AC Seater", type: "Non-AC Seater", time: "10:00 AM", price: "₹450", seats: 20 },
+    { name: "Orange Tours & Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹900", seats: 8 },
+                // ... (other bus entries)
+            ];
+
+            const busList = document.getElementById("busList");
+            buses.forEach((bus, index) => {
+                const busDiv = document.createElement("div");
+                busDiv.className = "bus";
+                busDiv.innerHTML = `
+                    <strong>${bus.name}</strong><br>
+                    ${bus.type}<br>
+                    Departure: ${bus.time}<br>
+                    Price: ${bus.price}<br>
+                    <button onclick="bookNow(${index})">Book Now</button>
+                `;
+                busList.appendChild(busDiv);
+            });
+        }
+
+        function applyFilters() {
+            const acFilter = document.getElementById("acFilter").value;
+            const timeFilter = document.getElementById("timeFilter").value;
+            const operatorFilter = document.getElementById("operatorFilter").value.toLowerCase();
+            const minPrice = parseInt(document.getElementById("minPrice").value) || 0;
+            const maxPrice = parseInt(document.getElementById("maxPrice").value) || Infinity;
+
+            const buses = [
+                { name: "SVR Tours & Travels", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+                { name: "SRS Travels", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+                { name: "VRL Travels", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+                { name: "shymolli", type: "VOLVO AC SLEEPER2*1", time: "10:00 AM", price: "₹500", seats: 15 },
+                { name: "RAJESH Travels", type: "VOLVO AC SLEEPER2*1", time: "2:00 PM", price: "₹650", seats: 10 },
+                { name: "APSRTC (Andhra Pradesh State Road Transport Corporation) - AC Sleeper", type: "AC Sleeper", time: "8:00 AM", price: "₹600", seats: 20 },
+    { name: "TSRTC (Telangana State Road Transport Corporation) - Non-AC Seater", type: "Non-AC Seater", time: "12:00 PM", price: "₹400", seats: 25 },
+    { name: "SVR Tours & Travels - AC Sleeper", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+    { name: "SRS Travels - Non-AC Seater", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+    { name: "VRL Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+    { name: "Shyamoli Paribahan - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "10:00 AM", price: "₹500", seats: 15 },
+    { name: "RAJESH Travels - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "2:00 PM", price: "₹650", seats: 10 },
+    { name: "Kallada Travels - AC Sleeper", type: "AC Sleeper", time: "8:00 PM", price: "₹700", seats: 12 },
+    { name: "Parveen Travels - Non-AC Seater", type: "Non-AC Seater", time: "10:00 AM", price: "₹450", seats: 20 },
+    { name: "Orange Tours & Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹900", seats: 8 },
+                // ... (other bus entries for filtering)
+            ];
+
+            const filteredBuses = buses.filter(bus => {
+                const busPrice = parseInt(bus.price.replace("₹", ""));
+                const isAC = acFilter ? bus.type.includes(acFilter) : true;
+                const isTimeMatch = timeFilter ? isTimeInRange(bus.time, timeFilter) : true;
+                const isOperatorMatch = bus.name.toLowerCase().includes(operatorFilter);
+                const isPriceInRange = busPrice >= minPrice && busPrice <= maxPrice;
+
+                return isAC && isTimeMatch && isOperatorMatch && isPriceInRange;
+            });
+
+            displayBuses(filteredBuses);
+        }
+
+        function isTimeInRange(time, filter) {
+            const hours = parseInt(time.split(":")[0]);
+            if (filter === "Morning") {
+                return hours >= 6 && hours < 12;
+            } else if (filter === "Afternoon") {
+                return hours >= 12 && hours < 18;
+            } else if (filter === "Evening") {
+                return hours >= 18 && hours < 24;
+            }
+            return true;
+        }
+
+        function displayBuses(buses) {
+            const busList = document.getElementById("busList");
+            busList.innerHTML = ''; // Clear previous list
+
+            if (buses.length === 0) {
+                busList.innerHTML = '<p>No buses found with the selected filters.</p>';
+                return;
+            }
+
+            buses.forEach((bus, index) => {
+                const busDiv = document.createElement("div");
+                busDiv.className = "bus";
+                busDiv.innerHTML = `
+                    <strong>${bus.name}</strong><br>
+                    ${bus.type}<br>
+                    Departure: ${bus.time}<br>
+                    Price: ${bus.price}<br>
+                    <button onclick="bookNow(${index})">Book Now</button>
+                `;
+                busList.appendChild(busDiv);
+            });
+        }
+
+        window.onload = loadAvailableBuses;
+
+        function bookNow(index) {
+            const buses = [
+                { name: "SVR Tours & Travels", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+                { name: "SRS Travels", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+                { name: "VRL Travels", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+                { name: "shymolli", type: "VOLVO AC SLEEPER2*1", time: "10:00 AM", price: "₹500", seats: 15 },
+                { name: "RAJESH Travels", type: "VOLVO AC SLEEPER2*1", time: "2:00 PM", price: "₹650", seats: 10 },
+                { name: "APSRTC (Andhra Pradesh State Road Transport Corporation) - AC Sleeper", type: "AC Sleeper", time: "8:00 AM", price: "₹600", seats: 20 },
+    { name: "TSRTC (Telangana State Road Transport Corporation) - Non-AC Seater", type: "Non-AC Seater", time: "12:00 PM", price: "₹400", seats: 25 },
+    { name: "SVR Tours & Travels - AC Sleeper", type: "AC Sleeper", time: "10:00 AM", price: "₹659", seats: 15 },
+    { name: "SRS Travels - Non-AC Seater", type: "Non-AC Seater", time: "2:00 PM", price: "₹500", seats: 10 },
+    { name: "VRL Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹800", seats: 5 },
+    { name: "Shyamoli Paribahan - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "10:00 AM", price: "₹500", seats: 15 },
+    { name: "RAJESH Travels - VOLVO AC SLEEPER 2*1", type: "VOLVO AC SLEEPER", time: "2:00 PM", price: "₹650", seats: 10 },
+    { name: "Kallada Travels - AC Sleeper", type: "AC Sleeper", time: "8:00 PM", price: "₹700", seats: 12 },
+    { name: "Parveen Travels - Non-AC Seater", type: "Non-AC Seater", time: "10:00 AM", price: "₹450", seats: 20 },
+    { name: "Orange Tours & Travels - Volvo AC", type: "Volvo AC", time: "6:00 PM", price: "₹900", seats: 8 },// ... (other bus entries for booking)
+            ];
+
+            const selectedBus = buses[index];
+            window.location.href = `seats.html?busName=${encodeURIComponent(selectedBus.name)}&type=${encodeURIComponent(selectedBus.type)}&time=${encodeURIComponent(selectedBus.time)}&price=${encodeURIComponent(selectedBus.price)}&seats=${selectedBus.seats}`;
+        }
+    </script>
+
+</body>
+</html>

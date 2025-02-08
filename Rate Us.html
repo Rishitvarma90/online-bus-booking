@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Us - Bus Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .rating-section, .feedback-section, .contact-section, .improvement-section {
+            margin-bottom: 20px;
+        }
+        .rating-label {
+            margin-right: 10px;
+        }
+        .rating-stars input {
+            margin-right: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .checkbox {
+            margin-top: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rate Us</h1>
+
+        <form action="/submit-feedback" method="POST">
+            <!-- Rating Section -->
+            <div class="rating-section">
+                <h2>Rate Your Experience</h2>
+                <label class="rating-label">Overall Experience:(required)</label>
+                <div class="rating-stars">
+                    <input type="radio" name="overall_rating" value="1"> 1
+                    <input type="radio" name="overall_rating" value="2"> 2
+                    <input type="radio" name="overall_rating" value="3"> 3
+                    <input type="radio" name="overall_rating" value="4"> 4
+                    <input type="radio" name="overall_rating" value="5"> 5
+                </div>
+                <p>Rate the following aspects:</p>
+                <label>Bus Comfort:</label>
+                <input type="range" name="comfort_rating" min="1" max="5" step="1"><br>
+                <label>Driver's Behavior:</label>
+                <input type="range" name="driver_rating" min="1" max="5" step="1"><br>
+                <label>Booking Process:</label>
+                <input type="range" name="booking_rating" min="1" max="5" step="1"><br>
+                <label>Punctuality:</label>
+                <input type="range" name="punctuality_rating" min="1" max="5" step="1"><br>
+            </div>
+
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <h2>Your Feedback</h2>
+                <label for="comments">Additional Comments:</label><br>
+                <textarea id="comments" name="comments"></textarea>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h2>Contact Us</h2>
+                <label for="contact_email">Email (required):</label><br>
+                <input type="email" id="contact_email" name="contact_email" placeholder="Your Email"><br><br>
+                <label for="contact_phone">Phone (required):</label><br>
+                <input type="tel" id="contact_phone" name="contact_phone" placeholder="Your Phone Number"><br><br>
+            </div>
+
+            <!-- Checkbox for Consent -->
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="consent" required> I agree to have my feedback published (anonymously or with pseudonym).
+                </label><br><br>
+                <label>
+                    <input type="checkbox" name="privacy_policy" required> I have read and agree to the <a href="#">Privacy Policy</a>
+                    <a<button onclick="window.location.href='Privacy Policy page.html';">Privacy Policy</button></a>.
+                </label><br><br>
+            </div>
+
+            <!-- Improvement Suggestions -->
+            <div class="improvement-section">
+                <h2>Improvement Suggestions</h2>
+                <label>What features would you like to see improved or added?</label><br>
+                <textarea name="suggestions" placeholder="Write your suggestions here..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            
+            <button onclick="window.location.href='Thank You.html';">Submit Feedback</button>
+        </div>
+
+        </form>
+    </div>
+</body>
+</html>

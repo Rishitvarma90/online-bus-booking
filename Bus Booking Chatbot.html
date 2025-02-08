@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(cc.gif); /* Replace with your actual image URL or path */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent repeating */
+            color: #ffffff; /* Change text color for better contrast */
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: transparent/* Semi-transparent background for readability */
+        }
+        section {
+            margin: 20px;
+            background-color: rgba(255, 255, 255, 0.03); /* Semi-transparent background for sections */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        select, input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+        #busList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .bus {
+            padding: 10px;
+            border: 1px solid #130202;
+            width: 200px;
+        }
+        #chatbox {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #0a0101;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .support-options {
+            display: none;
+        }
+        .support-options button {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 200px;
+        }
+        #ticketSection {
+            display: none;
+            margin-top: 20px;
+        }
+        button {
+            cursor: pointer;
+        }
+        .primary-button {
+            background-color: #4CAF50;
+            color: rgb(28, 3, 3);
+            border: none;
+            border-radius: 5px;
+        }
+        .secondary-button {
+            background-color: #f44336;
+            color: rgb(18, 2, 2);
+            border: none;
+            border-radius: 5px;
+        }
+        .info-button {
+            background-color: #2196F3;
+            color: rgb(23, 2, 2);
+            border: none;
+            border-radius: 5px;
+        }
+        .support-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+        .help-content {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="color: black;">Bus Booking System</h1>
+    </header>
+
+    <section>
+        <h2 style="color: rgb(37, 19, 228);" >Book Your Journey</h2>
+
+        <label for="fromSelect" style="color: rgb(210, 21, 21);">From:</label>
+        <select id="fromSelect"></select>
+
+        <label for="toSelect" style="color: rgb(208, 16, 16);">To:</label>
+        <select id="toSelect"></select>
+
+        <label for="dateSelect" style="color: rgb(239, 17, 17);">Travel Date:</label>
+        <input type="date" id="dateSelect" min="" />
+
+        <h2 style="color: rgb(221, 18, 18);">Available Buses</h2>
+        <div style="color: rgb(207, 9, 9);" id="busList"></div>
+
+        <button id="searchButton" class="primary-button">Search & Book</button>
+    </section>
+
+    <section id="userInfoSection" style="display: none;">
+        <h2  style="color: rgb(37, 19, 228);"> Enter Your Details</h2>
+        <label style="color: rgb(213, 17, 17);" for="userName">Name:</label>
+        <input type="text" id="userName" placeholder="Enter your name" />
+
+        <label style="color: rgb(212, 11, 11);"for="userPhone">Phone Number:</label>
+        <input type="text" id="userPhone" placeholder="Enter your 10-digit phone number" />
+
+        <label style="color: rgb(226, 22, 22);" for="userAge">Age:</label>
+        <input type="number" id="userAge" min="1" max="111" placeholder="Enter your age" />
+
+        <label style="color: rgb(233, 20, 166);"for="userGender">Gender:</label>
+        <select id="userGender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <button id="submitButton" class="primary-button">Submit</button>
+    </section>
+
+    <section style="color: rgb(12, 211, 32);"id="ticketSection">
+        <h2>Your Ticket</h2>
+        <p id="ticketInfo"></p>
+        <button id="printTicketButton" class="secondary-button">Print Ticket</button>
+        <button id="saveTicketButton" class="secondary-button">Save Ticket</button>
+    </section>
+
+    <section class="support-section">
+        <h2 style="color: rgb(240, 6, 104);">Customer Support</h2>
+        <button id="supportButton" class="info-button"  <div class="message" style="color: rgb(205, 16, 16);"></div>>Need Help?</button>
+
+        <div id="supportOptions" class="support-options">
+            <button id="supportHowToBook" class="info-button" >How to Book</button>
+            <button id="supportRefund" class="info-button">Refund</button>
+            <button id="supportTracking" class="info-button">Track Booking</button>
+            <button id="supportCancellation" class="info-button">Cancellation</button>
+        </div>
+
+        <div id="chatbox">
+            <div class="message" style="color: rgb(205, 16, 16);">Welcome to our customer support chat! How can I assist you today?</div>
+        </div>
+        <input type="text" id="userMessage" placeholder="Type your message..." />
+        <button id="sendMessageButton" class="primary-button">Send</button>
+    </section>
+
+    <section id="helpContent" class="help-content">
+        <div id="helpText"></div>
+        <button id="closeHelpButton" class="secondary-button">Close Help</button>
+    </section>
+
+    <script>
+        const places = ['Achanta', 'Adilabad', 'Anantapur', 'Annakapalli', 'Bhimadolu', 'Bhimavaram', 'Chillakalluripeta', 'Chittoor', 'Dubcheralla', 'Devarapalli','Vijayawada', 'Guntur', 'Nellore', 'Tirupati', 'Amaravati', 'Eluru', 'Kakinada', 'Rayagada', 'Rajahmundry', 'Ananthapuramu', 'Ongole', 'Kadapa', 'Srikakulam', 'Visakhapatnam Rural', 'Vijayanagaram', 'Palakollu', 'Nidadavole', 'Kovvur', 'Bhimavaram', 'Tadepalligudem', 'Jangareddygudem', 'Chittoor', 'Kurnool', 'Proddatur', 'Mangalgiri', 'Narasapuram', 'Peddaganjam', 'Chandragiri', 'Kamakshy Nagar', 'Dharmavaram', 'Jammalamadugu', 'Kakinada Rural', 'Puttur', 'Makavarapalem', 'Tenali', 'Mangalagiri', 'Nellimhisarla', 'Amalapuram', 'Gooty', 'Kuppam', 'Chirala', 'Brahmanakotakota', 'Tadipatri', 'Bhavanisagar', 'Kothagudem', 'Nellore Rural', 'Chintalapudi', 'Nagari', 'Srikalahasti', 'Banaganapalle', 'Gandhi Nagar', 'Satyavedu', 'Seetharamapuram', 'Pamidi', 'Korukonda', 'Palasa', 'Badvel', 'Kandukur', 'Mysore', 'Varanasi', 'Bhimavaram Rural'];
+
+        const buses = {
+            'Achanta': ['Luxury Bus', 'Semi-Luxury Bus'],
+            'Adilabad': ['Non-AC Bus'],
+            'Anantapur': ['AC Bus'],
+            'Annakapalli': ['Luxury Bus'],
+            'Bhimadolu': ['Non-AC Bus'],
+            'Bhimavaram': ['Semi-Luxury Bus'],
+            'Chillakalluripeta': ['Luxury Bus'],
+            'Chittoor': ['AC Bus'],
+            'Dubcheralla': ['Non-AC Bus'],
+            'Devarapalli': ['Semi-Luxury Bus'],
+             'Visakhapatnam': ['Luxury Bus', 'AC Bus', 'Non-AC Bus'],
+    'Vijayawada': ['Luxury Bus', 'Semi-Luxury Bus', 'Sleeper Bus'],
+    'Guntur': ['AC Bus', 'Non-AC Bus'],
+    'Nellore': ['Luxury Bus', 'Non-AC Bus'],
+    'Tirupati': ['Luxury Bus', 'Semi-Luxury Bus', 'AC Bus'],
+    'Amaravati': ['Non-AC Bus', 'Luxury Bus'],
+    'Eluru': ['AC Bus', 'Luxury Bus', 'Non-AC Bus'],
+    'Kakinada': ['Luxury Bus', 'Semi-Luxury Bus', 'Non-AC Bus'],
+    'Rayagada': ['Luxury Bus', 'Sleeper Bus'],
+    'Rajahmundry': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Ananthapuramu': ['Non-AC Bus', 'Luxury Bus'],
+    'Ongole': ['Semi-Luxury Bus', 'Luxury Bus'],
+    'Kadapa': ['Non-AC Bus', 'Luxury Bus'],
+    'Srikakulam': ['AC Bus', 'Luxury Bus'],
+    'Visakhapatnam Rural': ['Luxury Bus', 'Non-AC Bus'],
+    'Vijayanagaram': ['Semi-Luxury Bus', 'Luxury Bus'],
+    'Palakollu': ['AC Bus', 'Luxury Bus'],
+    'Nidadavole': ['Non-AC Bus', 'Luxury Bus'],
+    'Kovvur': ['Luxury Bus', 'Non-AC Bus'],
+    'Bhimavaram': ['AC Bus', 'Luxury Bus'],
+    'Tadepalligudem': ['Semi-Luxury Bus', 'Luxury Bus'],
+    'Jangareddygudem': ['Luxury Bus', 'Non-AC Bus'],
+    'Chittoor': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Kurnool': ['Luxury Bus', 'Non-AC Bus'],
+    'Proddatur': ['AC Bus', 'Luxury Bus'],
+    'Mangalgiri': ['Luxury Bus', 'Non-AC Bus'],
+    'Narasapuram': ['A/C Bus', 'Sleeper Bus'],
+    'Peddaganjam': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Chandragiri': ['Non-AC Bus', 'Luxury Bus'],
+    'Kamakshy Nagar': ['Luxury Bus', 'Non-AC Bus'],
+    'Dharmavaram': ['AC Bus', 'Luxury Bus'],
+    'Jammalamadugu': ['Non-AC Bus'],
+    'Kakinada Rural': ['Sleeper Bus', 'Luxury Bus'],
+    'Puttur': ['Luxury Bus', 'Semi-Luxury Bus'],
+    // Additional cities...
+    'Makavarapalem': ['Non-AC Bus'],
+    'Tenali': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Mangalagiri': ['AC Bus', 'Luxury Bus'],
+    'Nellimarla': ['Non-AC Bus', 'Luxury Bus'],
+    'Amalapuram': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Peddaganjam': ['Non-AC Bus', 'AC Bus'],
+    'Gooty': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Kuppam': ['AC Bus', 'Luxury Bus'],
+    'Chirala': ['Non-AC Bus', 'Luxury Bus'],
+    'Brahmanakotakota': ['Luxury Bus', 'Semi-Luxury Bus'],
+    'Tadipatri': ['Luxury Bus', 'Non-AC Bus'],
+    'Peddaganjam': ['Non-AC Bus', 'Luxury Bus'],
+    'Bhavanisagar': ['Luxury Bus'],
+    'Kothagudem': ['Non-AC Bus'],
+    'Nellore Rural': ['Luxury Bus'],
+    'Chintalapudi': ['Semi-Luxury Bus'],
+    'Nagari': ['Non-AC Bus'],
+    'Srikalahasti': ['Luxury Bus'],
+    'Banaganapalle': ['AC Bus', 'Luxury Bus'],
+    'Gandhi Nagar': ['Non-AC Bus'],
+    'Satyavedu': ['Luxury Bus'],
+    'Seetharamapuram': ['Non-AC Bus'],
+    'Pamidi': ['Luxury Bus'],
+    'Korukonda': ['Luxury Bus'],
+    'Palasa': ['Non-AC Bus'],
+    'Badvel': ['AC Bus'],
+    'Kandukur': ['Luxury Bus'],
+    'Mysore': ['Sleeper Bus'],
+    'Varanasi': ['Luxury Bus'],
+    'Bhimavaram Rural': ['Non-AC Bus'],
+        };
+
+        const fromSelect = document.getElementById('fromSelect');
+        const toSelect = document.getElementById('toSelect');
+        places.forEach(place => {
+            const optionFrom = document.createElement('option');
+            optionFrom.value = place;
+            optionFrom.textContent = place;
+            fromSelect.appendChild(optionFrom);
+
+            const optionTo = document.createElement('option');
+            optionTo.value = place;
+            optionTo.textContent = place;
+            toSelect.appendChild(optionTo);
+        });
+
+        const dateSelect = document.getElementById('dateSelect');
+        const today = new Date().toISOString().split('T')[0];
+        dateSelect.setAttribute('min', today);
+
+        function updateBuses() {
+            const fromPlace = fromSelect.value;
+            const toPlace = toSelect.value;
+            const busListContainer = document.getElementById('busList');
+            busListContainer.innerHTML = '';
+
+            if (fromPlace && toPlace && buses[fromPlace] && fromPlace !== toPlace) {
+                buses[fromPlace].forEach(bus => {
+                    const busDiv = document.createElement('div');
+                    busDiv.classList.add('bus');
+                    busDiv.textContent = `Bus from ${fromPlace} to ${toPlace}: ${bus}`;
+
+                    const selectButton = document.createElement('button');
+                    selectButton.textContent = 'Select Bus';
+                    selectButton.classList.add('primary-button');
+                    selectButton.addEventListener('click', () => {
+                        const chatbox = document.getElementById('chatbox');
+                        const messageDiv = document.createElement('div');
+                        messageDiv.classList.add('message');
+                        messageDiv.textContent = `You selected the ${bus} from ${fromPlace} to ${toPlace}. How can I assist you further?`;
+                        chatbox.appendChild(messageDiv);
+                        chatbox.scrollTop = chatbox.scrollHeight;
+                    });
+
+                    busDiv.appendChild(selectButton);
+                    busListContainer.appendChild(busDiv);
+                });
+            } else if (fromPlace === toPlace) {
+                alert('From and To places cannot be the same.');
+            } else {
+                const noBusDiv = document.createElement('div');
+                noBusDiv.textContent = 'No buses available for this route.';
+                busListContainer.appendChild(noBusDiv);
+            }
+        }
+
+        fromSelect.addEventListener('change', updateBuses);
+        toSelect.addEventListener('change', updateBuses);
+        dateSelect.addEventListener('change', updateBuses);
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const fromPlace = fromSelect.value;
+            const toPlace = toSelect.value;
+            const date = dateSelect.value;
+            
+            if (!fromPlace || !toPlace || !date) {
+                alert('Please select all fields.');
+                return;
+            }
+
+            document.getElementById('userInfoSection').style.display = 'block';
+        });
+
+        document.getElementById('submitButton').addEventListener('click', function() {
+            const userName = document.getElementById('userName').value;
+            const userPhone = document.getElementById('userPhone').value;
+            const userAge = document.getElementById('userAge').value;
+            const userGender = document.getElementById('userGender').value;
+
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!userName || !userPhone || !phoneRegex.test(userPhone) || !userAge || !userGender) {
+                alert('Please enter valid details.');
+                return;
+            }
+
+            document.getElementById('userInfoSection').style.display = 'none';
+            document.getElementById('ticketSection').style.display = 'block';
+
+            const ticketInfo = `Name: ${userName}<br>Phone: ${userPhone}<br>Age: ${userAge}<br>Gender: ${userGender}`;
+            document.getElementById('ticketInfo').innerHTML = ticketInfo;
+        });
+
+        document.getElementById('printTicketButton').addEventListener('click', function() {
+            window.print();
+        });
+
+        document.getElementById('saveTicketButton').addEventListener('click', function() {
+            alert('Ticket saved successfully!');
+        });
+
+        document.getElementById('supportButton').addEventListener('click', function() {
+            document.getElementById('supportOptions').style.display = 'block';
+        });
+
+        document.getElementById('supportHowToBook').addEventListener('click', function() {
+            showHelpContent('How to Book: Choose your departure and destination locations, select your travel date, and then choose a bus.');
+        });
+
+        document.getElementById('supportRefund').addEventListener('click', function() {
+            showHelpContent('Refund: If you need to cancel your booking, please contact our support team for the refund process.');
+        });
+
+        document.getElementById('supportTracking').addEventListener('click', function() {
+            showHelpContent('Track Booking: Enter your booking reference number to track the status of your booking.');
+        });
+
+        document.getElementById('supportCancellation').addEventListener('click', function() {
+            showHelpContent('Cancellation: If you need to cancel your booking, go to your account or contact our support team.');
+        });
+
+        function showHelpContent(helpText) {
+            document.getElementById('helpText').textContent = helpText;
+            document.getElementById('helpContent').style.display = 'block';
+        }
+
+        document.getElementById('closeHelpButton').addEventListener('click', function() {
+            document.getElementById('helpContent').style.display = 'none';
+        });
+
+        document.getElementById('sendMessageButton').addEventListener('click', function() {
+            const userMessage = document.getElementById('userMessage').value;
+            if (userMessage) {
+                const chatbox = document.getElementById('chatbox');
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.textContent = `You: ${userMessage}`;
+                chatbox.appendChild(messageDiv);
+
+                // Send a response
+                const responseDiv = document.createElement('div');
+                responseDiv.classList.add('message');
+                responseDiv.textContent = 'Thank you, we will respond soon.';
+                chatbox.appendChild(responseDiv);
+
+                chatbox.scrollTop = chatbox.scrollHeight;
+                document.getElementById('userMessage').value = ''; // Clear input field
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Bus Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrollbars */
+            position: relative; /* For positioning elements */
+            height: 100vh;
+            background-color: #f0f0f0;
+            background-size: cover; /* Cover the full viewport */
+            background-image: url(va.jpg); /* Replace with your small bus image URL */
+            background-position: center; /* Position the image from the center */
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9); /* Slightly opaque */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            position: absolute; /* Center the login container */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centering */
+            z-index: 1; /* Above the background */
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .forgot-password a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .guest-mode {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Login container -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form" onsubmit="return handleLogin(event);">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+        </div>
+        <div class="guest-mode">
+            <button onclick="redirectToIndex()">Guest Mode</button>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent the default form submission
+            // Add your logic here to handle actual login
+            // For example, validate the username/password if necessary
+            // Redirect to the index page after handling login
+            window.location.href = 'index1.html'; // Change 'index.html' to your actual index page path
+        }
+
+        function redirectToIndex() {
+            window.location.href = 'index1.html'; // Change 'index.html' to your actual index page path
+        }
+    </script>
+
+</body>
+</html>

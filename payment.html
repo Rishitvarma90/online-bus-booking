@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(p1.gif); /* Replace with your image URL */
+            background-size: cover; /* Cover the entire background */
+            margin: 0;
+            padding: 0;
+            color: #333; /* Set a default text color for readability */
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.175); /* Semi-transparent white */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        .payment-form {
+            margin-top: 20px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .terms {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .terms input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+        .passenger-form {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .coupon-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .coupon-section button {
+            width: auto;
+            padding: 10px 20px;
+        }
+        .ticket-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .ticket-actions button {
+            width: auto;
+            padding: 10px 20px;
+        }
+        .ticket-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .ticket-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .ticket-content h2 {
+            margin-bottom: 20px;
+        }
+        .ticket-content p {
+            margin: 10px 0;
+        }
+        .ticket-content button {
+            margin: 10px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Payment</h2>
+
+        <h3>Booking Details</h3>
+        <div id="bookingDetails"></div>
+
+        <div id="passengerForms"></div> <!-- Passenger Forms Container -->
+
+        <div class="payment-form">
+            <label for="payment">Enter Payment Amount: ₹</label>
+            <input type="number" id="payment" name="payment" readonly>
+
+            <label for="coupon">Enter Coupon Code:</label>
+            <div class="coupon-section">
+                <input type="text" id="coupon" name="coupon" placeholder="Enter Coupon Code">
+                <button id="applyCouponButton" onclick="applyCoupon()">Apply</button>
+            </div>
+            <p class="error" id="couponError" style="display: none;">Invalid Coupon Code</p>
+
+            <div class="terms">
+                <input type="checkbox" id="terms">
+                <label for="terms">I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a></label>
+            </div>
+            <p class="error" id="error" style="display: none;">You must agree to the Terms and Conditions before proceeding.</p>
+        </div>
+
+        <button onclick="processPayment()">Make Payment</button>
+
+        <!-- Ticket Actions (Hidden by Default) -->
+        <div id="ticketActions" class="ticket-actions" style="display: none;">
+            <button onclick="showTicket()">Print Ticket</button>
+            <button onclick="saveTicket()">Save Ticket</button>
+        </div>
+    </div>
+
+    <!-- Ticket Modal -->
+    <div id="ticketModal" class="ticket-modal">
+        <div class="ticket-content">
+            <h2>Official Ticket</h2>
+            <div id="ticketDetails"></div>
+            <h3>Terms and Conditions</h3>
+            <p>1. This ticket is non-transferable.</p>
+            <p>2. Please arrive at least 30 minutes before departure.</p>
+            <p>3. No refunds will be provided for cancellations.</p>
+            <p>4. Follow all safety guidelines during the journey.</p>
+            <button onclick="printTicket()">Print Ticket</button>
+            <button onclick="saveTicket()">Save Ticket</button>
+            <button onclick="backToHome()">Back to Home</button>
+            <button onclick="closeTicketModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const busName = urlParams.get('busName');
+        const time = urlParams.get('time');
+        const price = parseFloat(urlParams.get('price').replace('₹', ''));
+        const seatNumbers = urlParams.get('seats') ? urlParams.get('seats').split(',') : [];
+        const seatCount = seatNumbers.length;
+
+        let totalPrice = price * seatCount;
+        document.getElementById('payment').value = totalPrice.toFixed(2);
+
+        document.getElementById('bookingDetails').innerHTML = `
+            <strong>Bus Name:</strong> ${busName}<br>
+            <strong>Time:</strong> ${time}<br>
+            <strong>Price per Seat:</strong> ₹${price}<br>
+            <strong>Selected Seats:</strong> ${seatNumbers.join(', ')}<br>
+            <strong>Total Price:</strong> ₹<span id="totalPrice">${totalPrice.toFixed(2)}</span>
+        `;
+
+        const passengerFormsContainer = document.getElementById('passengerForms');
+        for (let i = 0; i < seatCount; i++) {
+            let seatNo = seatNumbers[i];
+            let passengerForm = document.createElement('div');
+            passengerForm.classList.add('passenger-form');
+            passengerForm.innerHTML = `
+                <h4>Passenger ${i + 1} (Seat No: ${seatNo})</h4>
+                <label for="name${i}">Full Name:</label>
+                <input type="text" id="name${i}" name="name${i}" placeholder="Enter your full name" required>
+
+                <label for="gender${i}">Gender:</label>
+                <select id="gender${i}" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="age${i}">Age:</label>
+                <input type="number" id="age${i}" name="age${i}" placeholder="Enter your age" required>
+
+                <label for="phoneNumber${i}">Phone Number:</label>
+                <input type="tel" id="phoneNumber${i}" name="phoneNumber${i}" placeholder="Enter your phone number" required pattern="[0-9]{10}">
+            `;
+            passengerFormsContainer.appendChild(passengerForm);
+        }
+
+        let hasAppliedCoupon = false; // Keep track of whether the coupon has been applied
+
+        function applyCoupon() {
+            if (hasAppliedCoupon) {
+                alert("You can only apply a coupon once.");
+                return;
+            }
+
+            const couponCode = document.getElementById('coupon').value.trim();
+            let discount = 0;
+
+            if (couponCode === 'DISCOUNT10') {
+                discount = totalPrice * 0.1; // 10% discount
+            } else {
+                document.getElementById('couponError').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('couponError').style.display = 'none';
+            totalPrice -= discount;
+            document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
+            document.getElementById('payment').value = totalPrice.toFixed(2);
+            hasAppliedCoupon = true; // Set the flag to true
+            document.getElementById('applyCouponButton').disabled = true; // Disable the button after use
+        }
+
+        function processPayment() {
+            const termsChecked = document.getElementById('terms').checked;
+            if (!termsChecked) {
+                document.getElementById('error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('error').style.display = 'none';
+            }
+
+            let areAllFieldsFilled = true;
+            for (let i = 0; i < seatCount; i++) {
+                if (document.getElementById(`name${i}`).value === '' 
+                    || document.getElementById(`gender${i}`).value === '' 
+                    || document.getElementById(`age${i}`).value === '' 
+                    || document.getElementById(`phoneNumber${i}`).value === '') {
+                    areAllFieldsFilled = false;
+                    alert('Please fill all the fields for all passengers.');
+                    break;
+                }
+            }
+
+            if (!areAllFieldsFilled) return;
+
+            // If payment processing would really happen here, but we simulate payment completion:
+            alert('Payment Successful! Your booking is confirmed.');
+            document.getElementById('ticketActions').style.display = 'flex'; // Show Print and Save buttons
+        }
+
+        function showTicket() {
+            const ticketDetails = document.getElementById('ticketDetails');
+            ticketDetails.innerHTML = `
+                <p><strong>Bus Name:</strong> ${busName}</p>
+                <p><strong>Time:</strong> ${time}</p>
+                <p><strong>Selected Seats:</strong> ${seatNumbers.join(', ')}</p>
+                <p><strong>Total Price:</strong> ₹${totalPrice.toFixed(2)}</p>
+                <p><strong>PNR Number:</strong> ${generatePNR()}</p>
+                <h3>Passenger Details</h3>
+                ${generatePassengerDetails()}
+            `;
+            document.getElementById('ticketModal').style.display = 'flex';
+        }
+
+        function generatePassengerDetails() {
+            let passengerDetails = '';
+            for (let i = 0; i < seatCount; i++) {
+                const name = document.getElementById(`name${i}`).value;
+                const gender = document.getElementById(`gender${i}`).value;
+                const age = document.getElementById(`age${i}`).value;
+                const phoneNumber = document.getElementById(`phoneNumber${i}`).value;
+                passengerDetails += `
+                    <p><strong>Passenger ${i + 1}:</strong> ${name}, ${gender}, ${age} years, ${phoneNumber}</p>
+                `;
+            }
+            return passengerDetails;
+        }
+
+        function generatePNR() {
+            let pnr = '';
+            for (let i = 0; i < 12; i++) {
+                pnr += Math.floor(Math.random() * 10);
+            }
+            return pnr;
+        }
+
+        function printTicket() {
+            window.print(); // Print the ticket
+            window.location.href="thank_you.html";
+        }
+
+        function saveTicket() {
+            alert('Ticket saved successfully! (Functionality not implemented)');
+            window.location.href="thank_you.html";
+        }
+
+        function backToHome() {
+            window.location.href = "index1.html"; // Redirect to the home page
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
